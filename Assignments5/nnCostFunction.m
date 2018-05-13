@@ -79,12 +79,12 @@ for i = 1:m
     a3 = sigmoid(z3) ;
     J = J + sum(-yvector.*log(a3) - (1-yvector).*log(1-a3)) ;
     %del3 = (a3 - yvector).*sigmoidGradient(z3) ; 
-    del3 = (a3 - yvector).*sigmoidGradient(z3) ; 
+    del3 = (a3 - yvector) ; 
     z2 = [1 ; z2] ;
     del2 = (Theta2)'*del3.*sigmoidGradient(z2) ;
     del2 = del2(2:end) ; %skipping the del0 as it is not used in calculation
-    Theta1_grad = Theta1_grad + del2*X(i,:) ;
-    Theta2_grad = Theta2_grad + del3*a2' ;
+    Theta1_grad = Theta1_grad + (1/m)*del2*X(i,:) ;
+    Theta2_grad = Theta2_grad + (1/m)*del3*a2' ;
     
     
 end
