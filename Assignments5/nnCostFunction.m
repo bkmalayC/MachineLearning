@@ -83,20 +83,28 @@ for i = 1:m
     z2 = [1 ; z2] ;
     del2 = (Theta2)'*del3.*sigmoidGradient(z2) ;
     del2 = del2(2:end) ; %skipping the del0 as it is not used in calculation
-    Theta1_grad = Theta1_grad + (1/m)*del2*X(i,:) ;
-    Theta2_grad = Theta2_grad + (1/m)*del3*a2' ;
-    
+    Theta1_grad = Theta1_grad + del2*X(i,:) ;
+    Theta2_grad = Theta2_grad + del3*a2' ;
     
 end
 
 J = J/m ;
 
-% Regularization part for lambda > 0. For lambda = 0 no impact.
+% Regularization part (cost) for lambda > 0. For lambda = 0 no impact.
 L1 =  sum(sum(Theta1(:,2:end).^2)) ;
 L2 =  sum(sum(Theta2(:, 2:end).^2));
 regularization = (lambda/(2*m))*(L1+L2) ;
 J = J + regularization ;
 
+
+%Regularization of gradient :
+
+Reg_Theta1  = [zeros(size(Theta1,1) , 1) lambda*Theta1(:,2:end)] ;
+Reg_Theta2  = [zeros(size(Theta2,1) , 1) lambda*Theta2(:,2:end)] ;
+Theta1_grad = Theta1_grad + Reg_Theta1 ;
+Theta2_grad = Theta2_grad + Reg_Theta2 ;
+
+
 % Unroll gradients
-grad = [Theta1_grad(:) ; Theta2_grad(:)];
+grad = (1/m)*[Theta1_grad(:) ; Theta2_grad(:)];
 
