@@ -2,3 +2,4 @@ See you later
 Only in remote
 Nice to rebase
 Unstaged changes
+New lines added
