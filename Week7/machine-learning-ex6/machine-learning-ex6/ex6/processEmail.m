@@ -7,10 +7,11 @@ function word_indices = processEmail(email_contents)
 %
 
 % Load Vocabulary
-vocabList = getVocabList();
+vocabList = sort(getVocabList());
 
 % Init return value
-word_indices = [];
+
+word_indices = [] ;
 
 % ========================== Preprocess Email ===========================
 
@@ -67,8 +68,9 @@ while ~isempty(email_contents)
     % Stem the word 
     % (the porterStemmer sometimes has issues, so we use a try catch block)
     try str = porterStemmer(strtrim(str)); 
-    catch str = ''; continue;
-    end;
+    catch str = ''; 
+        continue;
+    end
 
     % Skip the word if it is too short
     if length(str) < 1
@@ -98,14 +100,10 @@ while ~isempty(email_contents)
     %
 
 
-
-
-
-
-
-
-
-
+    [tf, idx] = ismember(str , vocabList);
+    if idx > 0
+    word_indices = [word_indices ; idx]; 
+    end
     % =============================================================
 
 
